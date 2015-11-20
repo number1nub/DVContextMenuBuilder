@@ -1,4 +1,4 @@
-﻿Uninstall(attempts) {
+Uninstall(attempts) {
 	CheckCredentials(attempts, 1)
 	csvSubKey := getCsvName() "\shell"
 	datSubKey := getDatName() "\shell"

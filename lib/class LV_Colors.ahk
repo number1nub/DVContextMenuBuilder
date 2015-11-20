@@ -1,4 +1,4 @@
-﻿class LV_Colors
+class LV_Colors
 {
    static MessageHandler := "LV_Colors_WM_NOTIFY"
    static WM_NOTIFY := 0x4E

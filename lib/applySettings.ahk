@@ -1,4 +1,4 @@
-﻿applySettings(items) {
+applySettings(items) {
 	if (devMode) {
 		m("Currently in DEV mode...",, "Can't write settings.", "ico:!")
 		return
