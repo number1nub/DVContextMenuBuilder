@@ -2,14 +2,14 @@
 #SingleInstance, Force
 SetWorkingDir, %A_ScriptDir%
 
-global config:={Items:{}, Active:"", Count:0}, dv:=A_ScriptDir "\DataViewer.exe", devMode:=""
+global config:={Items:{}, Active:"", Count:0}, dv:=A_ScriptDir "\DataViewer.exe", devMode:="", version:="1.2.0"
 
 if (InStr(%true%, "uninstall")) {
 	attempts = %2%
 	Uninstall(attempts)
 }
-CheckCredentials()
 CheckFiles()
+CheckCredentials()
 LoadSettings(%true%)
 LV_Colors.OnMessage()
 BuildGui()
@@ -22,6 +22,7 @@ return
 #Include <CheckFiles>
 #Include <class LV_Colors>
 #Include <getCsvName>
+#Include <getCurEntries>
 #Include <getDatName>
 #Include <getSelItems>
 #Include <LoadSettings>

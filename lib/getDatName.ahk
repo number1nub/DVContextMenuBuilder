@@ -1,4 +1,4 @@
 getDatName() {
-	RegRead, dat, HKCR, .dat
+	RegRead, dat, HKCR\.dat
 	return (ErrorLevel ? ".dat" : dat)
 }

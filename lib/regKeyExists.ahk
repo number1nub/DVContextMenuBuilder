@@ -1,10 +1,8 @@
 regKeyExists(key) {
-	keyName := RegExReplace(Trim(key), "i)^DataViewer - ")
+	keyName   := RegExReplace(Trim(key), "i)^DataViewer - ")
 	csvSubKey := getCsvName() "\shell\DataViewer - " keyName "\command"
 	datSubKey := getDatName() "\shell\DataViewer - " keyName "\command"
-	RegRead, v, HKCR, %csvSubKey%
-	err := ErrorLevel
-	RegRead, v, HKCR, %datSubKey%
-	err += ErrorLevel
-	return (err ? false : true)
+	RegRead, v1, HKCR\%csvSubKey%
+	RegRead, v2, HKCR\%datSubKey%
+	return ((v1 || v2) ? true : false)
 }
