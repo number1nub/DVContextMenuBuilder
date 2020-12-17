@@ -6,7 +6,7 @@ m(info*) {
 			opt += m_btn?btns[m_btn]:m_ico?icons[m_ico]:m_def?(m_def-1)*256:0
 		}
 		else
-			txt .= (txt ? "`n":"") v
+			txt .= (txt ? "`n":"") (v ? v : "`n")
 	}
 	MsgBox, % (opt+262144), %title%, %txt%, %timeout%
 	IfMsgBox, OK

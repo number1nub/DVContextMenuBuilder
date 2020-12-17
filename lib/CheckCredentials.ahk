@@ -1,11 +1,13 @@
-CheckCredentials(attempts:="", silent:="") {
-	if (devmode)
-		return
+CheckCredentials(info:="") {
+	if (devMode)
+		return 1
 	if (!A_IsAdmin) {
-		if (!silent)
-			ans := silent ? "Retry" : m("Administrator credentials are required...`n`nPress RETRY to attempt re-launching as admin.", "title:Insufficent User Access", "btn:rc", "ico:!")
-		if (!attempts && ans="Retry")
-			run *RunAs "%A_ScriptFullPath%"
+		if (info = "admin") {
+			if (m("ico:!", "btn:rc","Admin credentials required.`n", "Press RETRY to attempt re-launching as admin.")!="RETRY")
+				ExitApp
+		}
+		Run, *RunAs "%A_ScriptFullPath%" admin
 		ExitApp
 	}
+	return 1
 }

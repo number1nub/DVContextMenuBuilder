@@ -1,22 +1,23 @@
 BuildGui(title:="DV Context Menu Editor") {
-	static ItemList, BtnSubmit, Version
-
+	static ItemList, BtnSubmit, origList
+	
 	Gui, +AlwaysOnTop -MinimizeBox
 	Gui, Margin, 10, 5
 	Gui, Font, s22, Segoe UI
 	Gui, Add, Text,, Select Menu Items
 	Gui, Font, s12
-	Gui, Add, ListView, % "y+5 checked -Sort +NoSortHdr +Grid AltSubmit hwndItemListID vItemList gListSelectionChange R" (config.Count<16 ? config.Count : 15), Configurations
+	Gui, Add, ListView, % "y+5 checked +NoSortHdr +Grid AltSubmit hwndItemListID vItemList gListSelectionChange R" (config.Items.Count()<=maxHeight ? config.Items.Count() : maxHeight), Configurations
+	origList := ""
 	for c, v in config.Items
-		LV_Add(v ? "Check":"", c)
+		LV_Add(v ? "Check":"", c), origList.=v ? (origList?",":"") c : ""
 	Gui, Add, Button, y+5 w100 h40 hwndBtnSubmitID vBtnSubmit gSubmitChanges, Submit
-	Gui, Show,, % title:=(title (Version?" v" Version:""))
-
+	Gui, Show,, % title:=(title (Version ? " v" Version : ""))
+	
 	LV_Colors.Attach(ItemListID, 1)
 	StyleGUI(ItemListID, 0xEFEFEF, title)
 	return
-
-
+	
+	
 	ListSelectionChange:	;{
 		if (A_GuiControlEvent = "I" && ErrorLevel = "c") {
 			ControlGet, id, Hwnd,, SysListView321
@@ -26,8 +27,8 @@ BuildGui(title:="DV Context Menu Editor") {
 				LV_Colors.Row(id, row, 0xA4D1FF)
 		}
 	return	;}
-
-
+	
+	
 	SubmitChanges:	;{
 		selItems := [], row = 0
 		for c, v in config.Items
@@ -39,15 +40,12 @@ BuildGui(title:="DV Context Menu Editor") {
 		if applySettings(selItems)
 			m("Done!",, "Your context menu items have been updated.","ico:i")
 	ExitApp	;}
-
-
+	
+	
 	GuiClose:
-	GuiEscape:	;{
-		if (!devmode && config.Active != objToCsv(getSelItems())) {
-			MsgBox, 4148, Unsaved Changes, Are you sure you want to exit and discard changes?
-			IfMsgBox, Yes
-				ExitApp
-			return
-		}
+	GuiEscape:	;{		
+		if (origList != objToCsv(getSelItems()))
+			if (m("ico:?", "btn:ync", "title:Unsaved Changes", "Are you sure you want to exit and discard changes?")!="YES")
+				return
 	ExitApp	;}
 }

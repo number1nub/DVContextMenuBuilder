@@ -2,15 +2,18 @@
 #SingleInstance, Force
 SetWorkingDir, %A_ScriptDir%
 
-global config:={Items:{}, Active:"", Count:0}, dv:=A_ScriptDir "\DataViewer.exe", devMode:="", version:="1.2.0"
+;--- Script Settings ---
+global config    := {Items:{}}
+	 , dvPath    := A_ScriptDir "\DataViewer.exe"
+	 , devMode   := false
+	 , maxHeight := 18
+	 , version   := "9.1.1"
 
-if (InStr(%true%, "uninstall")) {
-	attempts = %2%
-	Uninstall(attempts)
-}
+CheckCredentials(%true%)
+if (InStr(%true%, "uninstall"))
+	Uninstall()
 CheckFiles()
-CheckCredentials()
-LoadSettings(%true%)
+LoadSettings()
 LV_Colors.OnMessage()
 BuildGui()
 return
@@ -24,6 +27,7 @@ return
 #Include <getCsvName>
 #Include <getCurEntries>
 #Include <getDatName>
+#Include <getFromYaml>
 #Include <getSelItems>
 #Include <LoadSettings>
 #Include <m>
